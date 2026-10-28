@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Comfort Arcana ✦</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 16px;
+  background: #191629;
+  color: #f5e9d0;
+  font-family: Georgia, serif;
+  text-align: center;
+}
+
+.eyebrow {
+  color: #c5a9e8;
+  letter-spacing: 3px;
+  font: 11px Arial, sans-serif;
+}
+
+h1 {
+  font-size: clamp(32px, 7vw, 48px);
+  font-weight: normal;
+  margin: 14px 0;
+}
+
+.intro {
+  color: #c9c0d9;
+  line-height: 1.7;
+  max-width: 340px;
+}
+
+.scene {
+  width: 250px;
+  height: 370px;
+  max-width: 78vw;
+  perspective: 1000px;
+  margin: 30px 0 20px;
+  cursor: pointer;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .8s ease;
+}
+
+.card.flipped { transform: rotateY(180deg); }
+
+.face {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #c8a76c;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.back {
+  background: #302543;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  box-shadow: inset 0 0 0 7px #302543,
+              inset 0 0 0 8px #9276a7;
+}
+
+.moon {
+  font-size: 64px;
+  color: #f2dca7;
+}
+
+.stars {
+  color: #d9c4ef;
+  letter-spacing: 12px;
+  font-size: 20px;
+}
+
+.back-label {
+  font-size: 12px;
+  letter-spacing: 3px;
+  line-height: 2;
+}
+
+.front {
+  transform: rotateY(180deg);
+  background: #342746;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 12px;
+}
+
+.number {
+  color: #e1c88e;
+  font-size: 12px;
+  letter-spacing: 3px;
+}
+
+.art {
+  width: 100%;
+  flex: 1;
+  margin: 12px 0;
+  border: 1px solid #9e83aa;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  background: radial-gradient(ellipse, #66517d, #282039);
+}
+
+.art-symbol { font-size: 86px; }
+
+.art-caption {
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 1.8;
+}
+
+.card-title {
+  font-size: 19px;
+  letter-spacing: 3px;
+}
+
+#message {
+  max-width: 360px;
+  min-height: 120px;
+}
+
+#quote {
+  font-size: 19px;
+  line-height: 1.7;
+}
+
+#meaning {
+  color: #c9c0d9;
+  font: 13px/1.8 Arial, sans-serif;
+}
+
+button {
+  border: 1px solid #c8a76c;
+  border-radius: 30px;
+  padding: 13px 24px;
+  color: #f5e9d0;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #302543;
+}
+
+.hint {
+  color: #a89bbd;
+  font: 11px Arial, sans-serif;
+  margin-top: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="eyebrow">A LITTLE ORACLE FOR DIFFICULT DAYS</div>
+<h1>The Comfort Arcana</h1>
+
+<p class="intro">
+  The universe is being a bit of a dick lately.<br>
+  Let's see what the boys have to say.
+</p>
+
+<div class="scene" id="scene" role="button"
+     tabindex="0" aria-label="Reveal your tarot card">
+  <div class="card" id="card">
+
+    <div class="face back">
+      <div class="moon">☾</div>
+      <div class="stars">✦ ✧ ✦</div>
+      <div class="back-label">THE COMFORT<br>ARCANA</div>
+      <div class="stars">✧ ✦ ✧</div>
+    </div>
+
+    <div class="face front">
+      <div class="number" id="number">XVII</div>
+      <div class="art">
+        <div class="art-symbol" id="symbol">☾</div>
+        <div class="art-caption" id="caption">
+          YOUR PERSONAL<br>CELESTIAL GUIDES
+        </div>
+      </div>
+      <div class="card-title" id="name">THE STAR</div>
+    </div>
+
+  </div>
+</div>
+
+<div id="message" aria-live="polite">
+  <p>✦ Tap the card to reveal a little hope.</p>
+</div>
+
+<button id="draw">Draw another card ✦</button>
+<div class="hint">A tiny reminder that you're not alone.</div>
+
+<script>
+const cards = [
+  {
+    name: "THE STAR",
+    number: "XVII",
+    symbol: "☾",
+    caption: "YOUR PERSONAL<br>CELESTIAL GUIDES",
+    quote: "You don't have to see the whole path. Just get through tonight.",
+    meaning: "The stars aren't going anywhere. You can rest."
+  },
+  {
+    name: "THE FOOL",
+    number: "0",
+    symbol: "✧",
+    caption: "A BRAND NEW<br>ADVENTURE",
+    quote: "You're allowed to be a beginner at this whole new life thing.",
+    meaning: "Being new at something doesn't mean you're failing."
+  },
+  {
+    name: "THE SUN",
+    number: "XIX",
+    symbol: "☀",
+    caption: "A LITTLE BIT<br>OF JOY",
+    quote: "You don't have to earn every nice thing by suffering first.",
+    meaning: "Go watch your silly videos. Joy counts, too."
+  },
+  {
+    name: "STRENGTH",
+    number: "VIII",
+    symbol: "♌",
+    caption: "SOFTER DOESN'T<br>MEAN WEAKER",
+    quote: "Look at you, doing difficult things nobody taught you how to do.",
+    meaning: "You're allowed to be tired and still be brave."
+  },
+  {
+    name: "THE HERMIT",
+    number: "IX",
+    symbol: "☾",
+    caption: "IT'S OKAY TO<br>GO SLOWLY",
+    quote: "You can miss your old life and still build one you love here.",
+    meaning: "Homesickness and hope can exist together."
+  },
+  {
+    name: "THE MAGICIAN",
+    number: "I",
+    symbol: "✴",
+    caption: "A LITTLE<br>EVERYDAY MAGIC",
+    quote: "You don't need to figure out your whole life today.",
+    meaning: "One small thing at a time is still magic."
+  }
+];
+
+let current = -1;
+
+function drawCard() {
+  let next;
+  do {
+    next = Math.floor(Math.random() * cards.length);
+  } while (cards.length > 1 && next === current);
+
+  current = next;
+  const chosen = cards[current];
+  const card = document.getElementById("card");
+
+  card.classList.remove("flipped");
+
+  document.getElementById("number").textContent = chosen.number;
+  document.getElementById("name").textContent = chosen.name;
+  document.getElementById("symbol").textContent = chosen.symbol;
+  document.getElementById("caption").innerHTML = chosen.caption;
+
+  document.getElementById("message").innerHTML = "";
+
+  setTimeout(() => {
+    card.classList.add("flipped");
+
+    const quote = document.createElement("p");
+    quote.id = "quote";
+    quote.textContent = "“" + chosen.quote + "”";
+
+    const meaning = document.createElement("p");
+    meaning.id = "meaning";
+    meaning.textContent = chosen.meaning;
+
+    document.getElementById("message").append(quote, meaning);
+  }, 180);
+}
+
+document.getElementById("scene").addEventListener("click", () => {
+  if (!document.getElementById("card").classList.contains("flipped")) {
+    drawCard();
+  }
+});
+
+document.getElementById("scene").addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    drawCard();
+  }
+});
+
+document.getElementById("draw").addEventListener("click", drawCard);
+</script>
+
+</body>
+</html>
