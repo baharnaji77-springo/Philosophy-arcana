@@ -174,7 +174,12 @@ button:hover {
   font: 11px Arial, sans-serif;
   margin-top: 18px;
 }
-</style>
+.art-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}</style>
 </head>
 
 <body>
@@ -200,12 +205,20 @@ button:hover {
 
     <div class="face front">
       <div class="number" id="number">XVII</div>
-      <div class="art">
-        <div class="art-symbol" id="symbol">☾</div>
-        <div class="art-caption" id="caption">
-          YOUR PERSONAL<br>CELESTIAL GUIDES
-        </div>
-      </div>
+<div class="art">
+  <img
+    id="art-image"
+    class="art-image"
+    style="display:none"
+    alt="Tarot card illustration"
+  >
+
+  <div class="art-symbol" id="symbol">☾</div>
+
+  <div class="art-caption" id="caption">
+    YOUR PERSONAL<br>CELESTIAL GUIDES
+  </div>
+</div>
       <div class="card-title" id="name">THE STAR</div>
     </div>
 
@@ -268,7 +281,16 @@ const cards = [
     caption: "A LITTLE<br>EVERYDAY MAGIC",
     quote: "You don't need to figure out your whole life today.",
     meaning: "One small thing at a time is still magic."
-  }
+  },
+  {
+  name: "DEATH",
+  number: "XIII",
+  symbol: "☠",
+  caption: "THE END IS A BEGINNING",
+  image: "images/images/death.png",
+  quote: "Sometimes the bravest thing you can do is let an old chapter end.",
+  meaning: "You are not starting from nothing. You are starting from experience."
+}
 ];
 
 let current = -1;
@@ -289,6 +311,18 @@ function drawCard() {
   document.getElementById("name").textContent = chosen.name;
   document.getElementById("symbol").textContent = chosen.symbol;
   document.getElementById("caption").innerHTML = chosen.caption;
+  const artImage = document.getElementById("art-image");
+
+if (chosen.image) {
+  artImage.src = chosen.image;
+  artImage.style.display = "block";
+  document.getElementById("symbol").style.display = "none";
+  document.getElementById("caption").style.display = "none";
+} else {
+  artImage.style.display = "none";
+  document.getElementById("symbol").style.display = "block";
+  document.getElementById("caption").style.display = "block";
+}
 
   document.getElementById("message").innerHTML = "";
 
